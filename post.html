@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yazı Detayı</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+</head>
+
+<body style="background-color: #f0fdf4;">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <i class="fa-solid fa-leaf"></i> Nazlının Günlüğü
+        </a>
+    </div>
+  </nav>
+
+  <main class="container my-4" id="postContent">
+    <!-- Blog yazısı burada yüklenecek -->
+  </main>
+
+  <footer class="bg-light text-center p-3">
+    <p>&copy; Nazlının Günlüğü</p>
+  </footer>
+
+  <!-- Harita JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Firebase SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="firebase/firebase-config.js"></script>
+
+  <!-- Blog verisini yükle -->
+  <script>
+    firebase.initializeApp(window.firebaseConfig);
+const db = firebase.firestore();
+
+const postContent = document.getElementById("postContent");
+const urlParams = new URLSearchParams(window.location.search);
+const postId = urlParams.get("id");
+
+if (!postId) {
+  postContent.innerHTML = "<p>Yazı ID'si bulunamadı.</p>";
+} else {
+  db.collection("blogPosts").doc(postId).get().then(doc => {
+    if (doc.exists) {
+      const post = doc.data();
+
+      const categoryColors = {
+        travel: "bg-success",
+        law: "bg-primary",
+        business: "bg-warning text-dark",
+        life: "bg-secondary"
+      };
+      const categoryClass = categoryColors[post.category] || "bg-dark";
+
+      postContent.innerHTML = `
+        <h1 class="mb-2">${post.title}</h1>
+        <span class="badge ${categoryClass} text-uppercase mb-3">${post.category}</span>
+        <div class="row mb-4">
+          <div class="col-md-12 mb-3">
+            <img src="${post.imageUrl}" class="img-fluid rounded" alt="${post.title}">
+          </div>
+        </div>
+        ${post.category === 'travel' ? `
+        <h5>📍 Konum</h5>
+        <div id="map" style="height: 300px;" class="mb-4 rounded"></div>` : ``}
+        <article class="mb-5">
+            <p>${post.content ? post.content.replace(/\n/g, "<br>") : "İçerik bulunamadı."}</p>
+        </article>
+        <a href="index.html" class="btn btn-secondary">← Anasayfaya Dön</a>
+      `;
+
+      // Sadece travel kategorisinde harita göster
+      if (post.category === 'travel' && post.latitude && post.longitude) {
+            const lat = parseFloat(post.latitude);
+            const lng = parseFloat(post.longitude);
+            if (!isNaN(lat) && !isNaN(lng)) {
+                const map = L.map('map').setView([lat, lng], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                L.marker([lat, lng]).addTo(map).bindPopup(post.title).openPopup();
+            } else {
+                console.warn("Konum bilgileri sayısal değil.");
+            }
+            }
+      // Eğer konum bilgileri varsa harita ekle
+
+    } else {
+      postContent.innerHTML = "<p>Yazı bulunamadı.</p>";
+    }
+  }).catch(error => {
+    postContent.innerHTML = `<p>Veri alınamadı: ${error.message}</p>`;
+  });
+}
+  </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Paneli - Yeni Yazı</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Open+Sans&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Özel Stil -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body style="background-color: #FFF8E1;">
+  <div class="container my-5 p-4 rounded shadow" style="background-color: #FADADD;">
+    <h2 class="mb-4"><i class="fa-solid fa-pen-to-square"></i> Yeni Yazı Ekle</h2>
+
+    <form id="postForm">
+      <div class="mb-3">
+        <label for="title" class="form-label">Başlık</label>
+        <input type="text" class="form-control" id="title" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="description" class="form-label">Kısa Açıklama</label>
+        <textarea class="form-control" id="description" rows="3" required></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="content" class="form-label">Yazı İçeriği</label>
+        <textarea class="form-control" id="content" rows="6" required></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="photo" class="form-label">Fotoğraf</label>
+        <input type="file" class="form-control" id="photo" accept="image/*" required>
+      </div>
+
+      <!-- Kategori -->
+      <div class="mb-3">
+        <label for="category" class="form-label">Kategori</label>
+        <select class="form-select" id="category" required>
+          <option value="">Bir kategori seçin</option>
+          <option value="travel">Seyahat</option>
+          <option value="law">Hukuk</option>
+          <option value="business">Girişimcilik</option>
+          <option value="life">Gündelik Notlar</option>
+        </select>
+      </div>
+
+      <!-- Konum alanları (sadece travel için gösterilecek) -->
+      <div id="locationFields" style="display: none;">
+        <div class="mb-3">
+          <label for="latitude" class="form-label">Enlem (latitude)</label>
+          <input type="text" class="form-control" id="latitude" placeholder="Örn: 41.8902">
+        </div>
+
+        <div class="mb-3">
+          <label for="longitude" class="form-label">Boylam (longitude)</label>
+          <input type="text" class="form-control" id="longitude" placeholder="Örn: 12.4922">
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-success">Yazıyı Kaydet</button>
+    </form>
+  </div>
+
+  <!-- JS -->
+  <script src="js/script.js"></script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js"></script>
+
+  <!-- Firebase config -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
+    import { firebaseConfig } from './firebase/firebase-config.js';
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    window.firebaseServices = { db, storage, addDoc, collection, ref, uploadBytes, getDownloadURL };
+  </script>
+</body>
+</html>

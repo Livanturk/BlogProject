@@ -1,0 +1,114 @@
+/* Genel font ayarları */
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #FFF8E1; /* Açık bej arka plan */
+    background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png'); /* Hafif doku */
+    background-repeat: repeat;
+}
+
+/* Başlık fontları */
+h1, h2, h5 {
+    font-family: 'Playfair Display', serif;
+    color: #2E8B57; /* Yaprak yeşili */
+}
+
+/* Navbar */
+.navbar {
+    background-color: #2E8B57 !important;
+}
+
+.navbar-brand, .nav-link {
+    color: white !important;
+    font-weight: bold;
+}
+
+.navbar-brand:hover, .nav-link:hover {
+    color: #FADADD !important; /* Pembe ton hover */
+}
+
+/* Blog kartı */
+.blog-card {
+    background-color: #ffffffde;
+    border: 2px dashed #f8bbd0; /* pastel pembe çerçeve */
+    border-radius: 20px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.blog-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+/* Yazı detayı için içeriğe kutu görünümü */
+article {
+    background-color: #ffffffc5;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+
+/* Yazı içeriği */
+article p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+.badge {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+    border-radius: 20px;
+}
+
+.badge-travel { background-color: #a5d6a7; color: #2e7d32; }       /* Yeşil */
+.badge-law { background-color: #ffccbc; color: #d84315; }         /* Toprak */
+.badge-business { background-color: #ffe082; color: #ff6f00; }    /* Sarı-turuncu */
+.badge-life { background-color: #e1bee7; color: #6a1b9a; }         /* Lila */
+
+
+
+/* Harita çerçevesi */
+#map {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+/* Form alanları */
+form label {
+    font-weight: bold;
+    color: #2E8B57;
+}
+
+form input, form textarea {
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+/* Footer */
+footer {
+    background-color: #2E8B57;
+    color: white;
+}
+
+/* Butonlar */
+.btn-success {
+    background-color: #81c784;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-weight: bold;
+}
+
+.btn-success:hover {
+    background-color: #66bb6a;
+}
